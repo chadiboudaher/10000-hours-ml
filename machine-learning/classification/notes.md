@@ -44,4 +44,5 @@ The goal is to find the optimal way to fit a distribution (normal, gamma, etc..)
 It draws a boundary directly between the classes. it only cares about the line to seperate spam and not spam.
 
 **Pros**: Usually performs well when you have a lot of data.
+
 **Cons**: it becomes _unstable_ if classes are perfectly seperated.
