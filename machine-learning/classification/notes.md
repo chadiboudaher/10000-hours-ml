@@ -27,7 +27,7 @@ Classification methods classifies data into classes base on its features or the 
 
 This function better represent the probabilities of the model by suppressing then into a range of (0, 1), disallowing negative and large value from accoring.
 
-$$ P(x) = \frac{e^{\beta_0+\beta_1X}}(1+e^{\beta_0+\beta_1X}) $$
+$$ P(x) = \frac{e^{\beta_0+\beta_1X}}{1+e^{\beta_0+\beta_1X}} $$
 
 $\beta_0$: Intercept of the model.
 $\beta_1$: Represent the a value that gives that best results based on the tained dataset.
@@ -42,5 +42,6 @@ The goal is to find the optimal way to fit a distribution (normal, gamma, etc..)
 ### 4.1 Discriminative Models (Logistic Regression)
 
 It draws a boundary directly between the classes. it only cares about the line to seperate spam and not spam.
+
 **Pros**: Usually performs well when you have a lot of data.
 **Cons**: it becomes _unstable_ if classes are perfectly seperated.
