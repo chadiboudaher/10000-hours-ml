@@ -12,5 +12,7 @@ There are two reasons:
 we use the logistic function:
 
 $$
-p(X) = \frac{\exp{\beta_0+\beta_1X}}{1+ \exp{\beta_0+\beta_1X}}
+p(X) = \frac{e^{\beta_0+\beta_1X}}{1+ e^{\beta_0+\beta_1X}}
 $$
+
+this function gives outputs between 0 and 1 for all values of $X$.
