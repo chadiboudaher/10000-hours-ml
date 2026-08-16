@@ -1,20 +1,46 @@
 # Classification
 
-## 1. Why not Linear Regression?
+## 1. Problem / Motivation
 
-There are two reasons:
+### What problem is this method trying to solve?
 
-1. Regression method cannot accommodate a qulitative response with more than two classes.
-2. A regression method will not provide meaningful estimates of $P_r(Y | X), even with just two classes.$
+Classification method is used is problems where the predicted output $Y$ is qualitative.
 
-## 2. Logistic Regression
+Qualitative data example:
 
-we use the logistic function:
+- SPAM / NOT SPAM.
+- Disease ? NO Disease.
+- Dog / cat / bird.
+- and many more...
 
-$$
-p(X) = \frac{e^{\beta_0+\beta_1X}}{1+ e^{\beta_0+\beta_1X}}
-$$
+### Why do we need it?
 
-this function gives outputs between 0 and 1 for all values of $X$.
+We need `classification` methods because simpler methods like `linear regression` does it work well with qualitative data (more precisely multinominal qualitative data)
 
-- to estimate the regression coefficients we use maximum likelihood to fit a logistic regression model. The estimates $\hat{\beta_0}$ and $\hat{\beta_1}$ are chosen to maximize this likelihood function. By `likelihood` we mean we are trying to find the optimal value of mmean and standart deviation for a distribution given a bunch of measured measurements.
+## 2. Core Idea
+
+Classification methods classifies data into classes base on its features or the data sample input $X$.
+
+## 3. Mathematical Formulation
+
+### 3.1 The logistic function
+
+This function better represent the probabilities of the model by suppressing then into a range of (0, 1), disallowing negative and large value from accoring.
+
+$$ P(x) = \frac{e^{\beta_0+\beta_1X}}(1+e^{\beta_0+\beta_1X}) $$
+
+$\beta_0$: Intercept of the model.
+$\beta_1$: Represent the a value that gives that best results based on the tained dataset.
+$X$: Input feature.
+
+### 3.2 The maximum likelihood
+
+The goal is to find the optimal way to fit a distribution (normal, gamma, etc..) to the data. So instead of minimizing the distance of points from a line (like in linear regression), maximum likelihood asks: "what values of $\beta_0$ and $\beta_1$ make the observed data most probable?"
+
+## How It Works
+
+### 4.1 Discriminative Models (Logistic Regression)
+
+It draws a boundary directly between the classes. it only cares about the line to seperate spam and not spam.
+**Pros**: Usually performs well when you have a lot of data.
+**Cons**: it becomes _unstable_ if classes are perfectly seperated.
