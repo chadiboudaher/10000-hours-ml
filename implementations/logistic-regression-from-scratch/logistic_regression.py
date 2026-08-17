@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression as LogisticRegressionSKlearn
 
 np.random.seed(42)
 
@@ -122,13 +123,24 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-model = LogisticRegression(numOfFeatures=5)
-model.fit(X_train, y_train, epochs=500, lr=0.1)
-model.plot_loss()
+my_model = LogisticRegression(numOfFeatures=5)
+my_model.fit(X_train, y_train, epochs=500, lr=0.1)
+my_model.plot_loss()
 
-y_pred_probs = model.predict_prob(X_test)
-y_pred = model.predict(X_test)
+sk_model = LogisticRegressionSKlearn(max_iter=400)
+sk_model.fit(X_train, y_train)
+
+y_pred_probs = my_model.predict_prob(X_test)
+y_pred = my_model.predict(X_test)
+sk_pred = sk_model.predict(X_test)
+y_pred_probs_sk = sk_model.predict_proba(X_test)
+
 accuracy = np.mean(y_pred == y_test)
+sk_accuracy = np.mean(sk_pred == y_test)
 print(f"Test Accuracy: {accuracy:.4f}")
+print(f"Test Accuracy using sklearn model: {sk_accuracy:.4f}")
+
 loss = compute_loss(y_test, y_pred_probs)
+sk_loss = compute_loss(y_test, y_pred_probs_sk)
 print(f"Loss: {loss:.4f}")
+print(f"Loss using sklearn model: {sk_loss}")
