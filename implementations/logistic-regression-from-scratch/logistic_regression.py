@@ -17,8 +17,8 @@ def compute_gradients(X, y, p):
     dw = (-1 / m) * np.sum(y * (X * (1 - p)) + (1 - y) * (-p * X), axis=0)
     db = (-1 / m) * np.sum(y * (1 - p) + (1 - y) * (-p))
 
-    print(dw.shape)
-    print(db.shape)
+    # print(dw.shape)
+    # print(db.shape)
 
     return dw, db
 
@@ -31,7 +31,7 @@ class LogisticRegression:
         self.weights = np.zeros(numOfFeatures)
         self.bias = 0 
 
-    def fit(self, X, y, epochs=1000, lr=0.1):
+    def fit(self, X, y, epochs=1000, lr=0.01):
         for epoch in range(epochs):
             # Make a prediction
             z = X @ self.weights + self.bias
@@ -59,8 +59,28 @@ class LogisticRegression:
         return (probs >= threshold).astype(int)
 
 # Example for compute gradients
-X = np.random.randn(100, 3)
-y = np.random.randint(0, 2, 100)
-p = np.random.rand(100)
+# X = np.random.randn(100, 3)
+# y = np.random.randint(0, 2, 100)
+# p = np.random.rand(100)
 
-compute_gradients(X, y, p)
+# compute_gradients(X, y, p)
+
+# Test with synthetic data
+np.random.seed(42)
+X = np.random.randn(1000, 3)
+true_weights = np.array([2, -1, 0.5])
+true_bias = -0.5
+z = X @ true_weights + true_bias
+y = (sigmoid(z) > 0.5).astype(int)
+
+model = LogisticRegression(numOfFeatures=3)
+model.fit(X, y, epochs=1500, lr=0.01)
+
+predictions = model.predict(X)
+accuracy = np.mean(predictions == y)
+
+print(f"\nAccuracy: {accuracy:.4f}")
+print(f"True weights: {true_weights}")
+print(f"Learned weight: {model.weights}")
+print(f"True bias: {true_bias}")
+print(f"Learned bias: {model.bias:.4f}")
