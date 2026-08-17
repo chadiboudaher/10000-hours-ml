@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -36,7 +37,8 @@ class LogisticRegression:
     """
     def __init__(self, numOfFeatures):
         self.weights = np.zeros(numOfFeatures)
-        self.bias = 0 
+        self.bias = 0
+        self.loss_history = []
 
     def fit(self, X, y, epochs=1000, lr=0.01):
         for epoch in range(epochs):
@@ -53,12 +55,20 @@ class LogisticRegression:
             self.weights -= lr * dw
             self.bias -= lr * db
 
+            loss = compute_loss(y, p)
+            self.loss_history.append(loss)
+
             if epoch % 100 == 0:
-                loss = compute_loss(y, p)
                 predictions = (p >= 0.5).astype(int)
                 accuracy = np.mean(y == predictions)
                 print(f"Epoch {epoch}, loss: {loss:.4f}, Accuracy: {accuracy:.2f}")
 
+    def plot_loss(self):
+        plt.plot(self.loss_history)
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.title("Training loss")
+        plt.show()
     def predict_prob(self, X):
         z = X @ self.weights + self.bias
         return sigmoid(z)
@@ -113,7 +123,8 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 model = LogisticRegression(numOfFeatures=5)
-model.fit(X_train, y_train, epochs=1000, lr=0.1)
+model.fit(X_train, y_train, epochs=500, lr=0.1)
+model.plot_loss()
 
 y_pred_probs = model.predict_prob(X_test)
 y_pred = model.predict(X_test)
