@@ -55,7 +55,9 @@ class LogisticRegression:
 
             if epoch % 100 == 0:
                 loss = compute_loss(y, p)
-                print(f"Epoch {epoch}, loss: {loss:.4f}")
+                predictions = (p >= 0.5).astype(int)
+                accuracy = np.mean(y == predictions)
+                print(f"Epoch {epoch}, loss: {loss:.4f}, Accuracy: {accuracy:.2f}")
 
     def predict_prob(self, X):
         z = X @ self.weights + self.bias
@@ -92,12 +94,15 @@ class LogisticRegression:
 # print(f"True bias: {true_bias}")
 # print(f"Learned bias: {model.bias:.4f}")
 
-X, y = make_classification(random_state=42,
-                           n_samples=1000,
-                           n_features=5,
-                           n_classes=2,
-                           n_clusters_per_class=1,
-                           shuffle=True)
+X, y = make_classification(
+    n_samples=1000, 
+    n_features=5,
+    n_informative=3,
+    n_redundant=2,
+    flip_y=0.1,
+    class_sep=1.0,
+    random_state=42
+)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                     train_size=0.8,
@@ -108,10 +113,11 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 model = LogisticRegression(numOfFeatures=5)
-model.fit(X_train, y_train, epochs=1000, lr=0.01)
+model.fit(X_train, y_train, epochs=1000, lr=0.1)
 
+y_pred_probs = model.predict_prob(X_test)
 y_pred = model.predict(X_test)
 accuracy = np.mean(y_pred == y_test)
 print(f"Test Accuracy: {accuracy:.4f}")
-loss = compute_loss(y_pred, y_test)
+loss = compute_loss(y_test, y_pred_probs)
 print(f"Loss: {loss:.4f}")
