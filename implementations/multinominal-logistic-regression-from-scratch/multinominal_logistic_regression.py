@@ -26,6 +26,15 @@ def compute_loss(y, p):
     L = (-1/m) * np.sum(y * np.log(p))
     return L
 
+def compute_gradients(X, y_onehot, p):
+    m = X.shape[0]
+
+    dL_dz = p - y_onehot
+    dw = (1/m) * X.T @ dL_dz
+    db = (1/m) * np.sum(dL_dz, axis=0)
+    
+    return dw, db
+
 class MultinominalLogisticRegression:
     def __init__(self, n_features, n_classes):
         self.weights = np.zeros((n_features, n_classes))
@@ -33,6 +42,41 @@ class MultinominalLogisticRegression:
         self.loss_history = []
 
     def fit(self, X, y, epochs=1000, lr=0.1):
-        z = X @ self.weights + self.bias
-        p = softmax(z)
+        n_classes = self.weights.shape[1]
+        y_onehot = np.eye(n_classes)[y]
 
+        for epoch in range(epochs):
+            z = X @ self.weights + self.bias
+            p = softmax(z)
+
+            dw, db = compute_gradients(X, y_onehot, p)
+
+            self.weights -= lr * dw
+            self.bias -= lr * db
+            
+            loss = compute_loss(y_onehot, p)
+            self.loss_history.append(loss)
+            
+            if epoch % 100 == 0:
+                predictions = np.argmax(p, axis=1)
+                accuracy = np.mean(predictions == y)
+                print(f"Epoch {epoch}, loss: {loss:.4f}, Accuracy: {accuracy:.4f}")
+
+    def predict_prob(self, X):
+        """Return predicted probabilities"""
+        z = X @ self.weights + self.bias
+        return softmax(z)
+
+    def predict(self, X):
+        """Return predicted class labels"""
+        probs = self.predict_prob(X)
+        return np.argmax(probs, axis=1)
+
+    def plot_loss(self):
+        """Plot training loss history"""
+        import matplotlib.pyplot as plt
+        plt.plot(self.loss_history)
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.title("Training Loss")
+        plt.show()
