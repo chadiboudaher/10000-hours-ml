@@ -11,14 +11,28 @@ def softmax(z):
     We solve this issue using the "Exp-normalize trick".
     """
     maximum = np.max(z, axis=-1, keepdims=True)
-    e_x = np.exp(x - maximum)
+    e_x = np.exp(z - maximum)
     return e_x / np.sum(e_x, axis=-1, keepdims=True)
+
+def compute_loss(y, p):
+    """
+    Categorical cross entropy is used with multi-class classification
+    problems.
+    """
+    m = len(y)
+    eps = 1e-15
+
+    p = np.clip(p, eps, 1-eps)
+    L = (-1/m) * np.sum(y * np.log(p))
+    return L
 
 class MultinominalLogisticRegression:
     def __init__(self, n_features, n_classes):
-        self.weights = np.zeros(n_features, n_classes)
+        self.weights = np.zeros((n_features, n_classes))
         self.bias = np.zeros(n_classes)
         self.loss_history = []
 
     def fit(self, X, y, epochs=1000, lr=0.1):
-        ...
+        z = X @ self.weights + self.bias
+        p = softmax(z)
+
