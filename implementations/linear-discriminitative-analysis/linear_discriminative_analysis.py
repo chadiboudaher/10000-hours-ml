@@ -19,7 +19,7 @@ for i in range(N_SAMPLES):
         X[i] = np.random.uniform(0, 1, size=N_FEATURES) + NOISE
     else:
         X[i] = np.random.uniform(2, 3, size=N_FEATURES) + NOISE
-print(X)
+# print(X)
 # print(y)
 
 mean = np.zeros((N_CLASSES, N_FEATURES))
@@ -79,3 +79,20 @@ class LinearDiscriminantAnalysis:
             deltas[:, idx] = dot_product / self.scatter - quadratic + prior_term
     
         return self.classes[np.argmax(deltas, axis=1)]
+
+    def predict_proba(self, X):
+        n_samples = X.shape[0]
+        n_classes = len(self.classes)
+        deltas = np.zeros((n_samples, n_classes))
+        
+        for idx, class_label in enumerate(self.classes):
+            mu_k = self.means[idx]
+            dot_product = X @ mu_k
+            quadratic = np.sum(mu_k**2) / (2 * self.scatter)
+            deltas[:, idx] = dot_product / self.scatter - quadratic + np.log(self.priors[idx])
+
+        deltas_shifted = deltas - np.max(deltas, axis=1, keepdims=True)
+        exp_deltas = np.exp(deltas_shifted)
+        probabilities = exp_deltas / np.sum(exp_deltas, axis=1, keepdims=True)
+        
+        return probabilities
