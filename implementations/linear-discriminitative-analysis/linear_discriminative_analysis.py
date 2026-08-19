@@ -5,7 +5,7 @@ RANDOM_SEED = 42
 N_FEATURES = 4
 N_SAMPLES = 100
 N_CLASSES = 2
-NOISE = 0.1
+NOISE = 0.3
 
 np.random.seed(RANDOM_SEED)
 
@@ -16,9 +16,9 @@ y = np.random.randint(0, N_CLASSES, N_SAMPLES)
 
 for i in range(N_SAMPLES):
     if y[i] == 0:
-        X[i] = np.random.uniform(0, 1, size=N_FEATURES) + NOISE
+        X[i] = np.random.uniform(0, 1, size=N_FEATURES)
     else:
-        X[i] = np.random.uniform(2, 3, size=N_FEATURES) + NOISE
+        X[i] = np.random.uniform(1.05, 2.05, size=N_FEATURES) + NOISE
 # print(X)
 # print(y)
 
@@ -96,3 +96,13 @@ class LinearDiscriminantAnalysis:
         probabilities = exp_deltas / np.sum(exp_deltas, axis=1, keepdims=True)
         
         return probabilities
+
+lda = LinearDiscriminantAnalysis()
+lda.fit(X, y)
+
+y_pred = lda.predict(X)
+
+y_proba = lda.predict_proba(X)
+
+accuracy = np.mean(y_pred == y)
+print(f"Accuracy: {accuracy:.3f}")
