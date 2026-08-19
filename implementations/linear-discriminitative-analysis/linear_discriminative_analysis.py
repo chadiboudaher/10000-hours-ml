@@ -16,9 +16,9 @@ y = np.random.randint(0, N_CLASSES, N_SAMPLES)
 
 for i in range(N_SAMPLES):
     if y[i] == 0:
-        X[i] = np.random.uniform(0, 1, size=N_FEATURES)
+        X[i] = np.random.uniform(0.3, 0.5, size=N_FEATURES)
     else:
-        X[i] = np.random.uniform(1.05, 2.05, size=N_FEATURES) + NOISE
+        X[i] = np.random.uniform(0.8, 0.3, size=N_FEATURES)
 # print(X)
 # print(y)
 
