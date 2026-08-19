@@ -16,11 +16,14 @@ y = np.random.randint(0, N_CLASSES, N_SAMPLES)
 
 for i in range(N_SAMPLES):
     if y[i] == 0:
-        X[i] = np.random.uniform(0, 1) + NOISE
+        X[i] = np.random.uniform(0, 1, size=N_FEATURES) + NOISE
     else:
-        X[i] = np.random.uniform(2, 3) + NOISE
+        X[i] = np.random.uniform(2, 3, size=N_FEATURES) + NOISE
 print(X)
-print(y)
+# print(y)
+
+mean = np.zeros((N_CLASSES, N_FEATURES))
+print(mean)
 
 class LinearDiscriminantAnalysis:
     def __init__(self, n_samples=100,n_features=4, n_classes=2):
@@ -61,4 +64,18 @@ class LinearDiscriminantAnalysis:
 
         self.scatter = total_scatter / (n_samples - n_classes)
 
+    def predict(self, X):
+        n_samples = X.shape[0]
+        n_classes = len(self.classes)
+
+        deltas = np.zeros((n_samples, n_classes))
+        for idx, class_label in enumerate(self.classes):
+            mu_k = self.means[idx]
+        
+            dot_product = X @ mu_k
+            quadratic = np.sum(mu_k**2) / (2 * self.scatter)
+            prior_term = np.log(self.priors[idx])
+            
+            deltas[:, idx] = dot_product / self.scatter - quadratic + prior_term
     
+        return self.classes[np.argmax(deltas, axis=1)]
