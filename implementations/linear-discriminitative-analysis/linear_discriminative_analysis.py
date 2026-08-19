@@ -23,5 +23,42 @@ print(X)
 print(y)
 
 class LinearDiscriminantAnalysis:
-    def __init__(self):
-        ...
+    def __init__(self, n_samples=100,n_features=4, n_classes=2):
+        self.means = None
+        self.priors = None
+        self.scatter = None
+        self.classes = None
+
+    def fit(self, X, y):
+        """
+        means: Shape, we have one for each class. (n_classes, n_features)
+        prior: Shape, we have one for each class. (n_classes,)
+        scatter: variance (scalar)
+        classes: unique classes labels
+        """
+
+        # Get classes
+        self.classes = np.unique(y)
+        n_classes = len(self.classes)
+
+        n_samples, n_features = X.shape
+        self.means = np.zeros((n_classes, n_features))
+        self.priors = np.zeros(n_classes)
+
+        total_scatter = 0
+
+        for idx, class_label in enumerate(self.classes):
+            X_k = X[y == class_label]
+            n_k = X_k.shape[0]
+
+            self.means[idx] = X_k.mean(axis=0)
+
+            self.priors[idx] = n_k / n_samples
+
+            deviations = X_k - self.means[idx]
+            scatter_k = np.sum(deviations**2)
+            total_scatter += scatter_k
+
+        self.scatter = total_scatter / (n_samples - n_classes)
+
+    
