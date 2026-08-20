@@ -199,3 +199,16 @@ class LinearDiscriminantAnalysis:
 
         for i in range(n_classes):
             self.prior_[i] = counts[i] / n_samples
+
+        cov = np.zeros((n_classes, n_features, n_features))
+
+        for i in range(n_classes):
+            cov[i] = (
+                (X_by_class[i][:counts[i]] - self.means_[i]).T @ 
+                (X_by_class[i][:counts[i]] - self.means_[i]) / counts[i]
+            )
+
+        self.pooled_covariance_ = np.zeros((n_features, n_features))
+
+        for i in range(n_classes):
+            self.pooled_covariance_ += (counts[i] / n_samples) * cov[i]
