@@ -163,6 +163,7 @@ class LinearDiscriminantAnalysis:
         self.prior_ = None
         self.pooled_covariance_ = None
         self.classes_ = None
+        self.inv_pooled_cov_ = None
 
     def fit(self, X, y):
         n_samples, n_features = X.shape
@@ -212,3 +213,5 @@ class LinearDiscriminantAnalysis:
 
         for i in range(n_classes):
             self.pooled_covariance_ += (counts[i] / n_samples) * cov[i]
+
+        self.inv_pooled_cov_ = np.linalg.inv(self.pooled_covariance_)
