@@ -164,6 +164,8 @@ class LinearDiscriminantAnalysis:
         self.pooled_covariance_ = None
         self.classes_ = None
         self.inv_pooled_cov_ = None
+        self.intercept_ = None
+        self.coef_ = None
 
     def fit(self, X, y):
         n_samples, n_features = X.shape
@@ -215,3 +217,14 @@ class LinearDiscriminantAnalysis:
             self.pooled_covariance_ += (counts[i] / n_samples) * cov[i]
 
         self.inv_pooled_cov_ = np.linalg.inv(self.pooled_covariance_)
+
+        self.coef_ = np.zeros((n_classes, n_features))
+        self.intercept_ = np.zeros(n_classes)
+
+        for i in range(n_classes):
+            self.coef_[i] = self.inv_pooled_cov_ @ self.means_[i]
+            self.intercept_[i] = (
+                (-1 / 2) * self.means_[i].T @ 
+                self.inv_pooled_cov_ @ 
+                self.means_[i] + np.log(self.prior_[i])
+            )
