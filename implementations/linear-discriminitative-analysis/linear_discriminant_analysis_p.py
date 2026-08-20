@@ -159,4 +159,33 @@ print(f"Inverse pooled covariance: {inv_pooled_cov}")
 
 class LinearDiscriminantAnalysis:
     def __init__(self):
-        ...
+        self.means_ = None
+        self.prior_ = None
+        self.pooled_covariance_ = None
+        self.classes_ = None
+
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+        n_classes = len(np.unique(y))
+
+        self.classes_ = np.unique(y)
+        classes = np.unique(y)
+        counts = np.zeros((n_classes))
+
+        for i in range(n_samples):
+            cls_index = np.where(classes == y[i])[0][0]
+            counts[cls_index] += 1
+
+        max_samples = np.max(counts)
+        X_by_class = np.zeros((n_classes, max_samples, n_features))
+
+        class_to_idx = {cls: idx for idx, cls in enumerate(classes)}
+
+        row_trackers = np.zeros(n_classes)
+
+        for i in range(n_samples):
+            cls = y[i]
+            cls_idx = class_to_idx[cls]
+
+            X_by_class[cls_idx][row_trackers[cls_idx]] = X[i]
+            row_trackers[cls_idx] += 1
