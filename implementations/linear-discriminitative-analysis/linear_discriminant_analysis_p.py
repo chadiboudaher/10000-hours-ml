@@ -80,6 +80,7 @@ class_mean[1] = np.mean(X_1, axis=0)
 class_mean[2] = np.mean(X_2, axis=0)
 class_mean[3] = np.mean(X_3, axis=0)
 
+print(f"Class mean shape: {class_mean.shape}")
 print(class_mean)
 
 
@@ -120,11 +121,41 @@ classes_num = [class0_num, class1_num, class2_num, class3_num]
 for i in range(N_CLASSES):
     prior[i] = classes_num[i] / N_SAMPLES
 
-print(f"The prior value for class 0: {prior[0]}")
-print(f"The prior value for class 1: {prior[1]}")
-print(f"The prior value for class 2: {prior[2]}")
-print(f"The prior value for class 3: {prior[3]}")
-print(f"Sum of priors: {np.sum(prior)}")
+# print(f"The prior value for class 0: {prior[0]}")
+# print(f"The prior value for class 1: {prior[1]}")
+# print(f"The prior value for class 2: {prior[2]}")
+# print(f"The prior value for class 3: {prior[3]}")
+# print(f"Sum of priors: {np.sum(prior)}")
+
+# Covariance
+cov = np.zeros((N_CLASSES, N_FEATURES, N_FEATURES))
+
+cov[0] = (X_0 - class_mean[0]).T @ (X_0 - class_mean[0]) / class0_num
+cov[1] = (X_1 - class_mean[1]).T @ (X_1 - class_mean[1]) / class1_num
+cov[2] = (X_2 - class_mean[2]).T @ (X_2 - class_mean[2]) / class2_num
+cov[3] = (X_3 - class_mean[3]).T @ (X_3 - class_mean[3]) / class3_num
+
+print(f"Cov[0] shape: {cov[0].shape}")
+print(f"Cov[1] shape: {cov[1].shape}")
+print(f"Cov[2] shape: {cov[2].shape}")
+print(f"Cov[3] shape: {cov[3].shape}")
+# print(f"Covariance Matrix: {cov}")
+
+pooled_cov = (
+    (class0_num/N_SAMPLES) * cov[0] + 
+    (class1_num/N_SAMPLES) * cov[1] + 
+    (class2_num/N_SAMPLES) * cov[2] + 
+    (class3_num/N_SAMPLES) * cov[3]
+)
+
+print(f"pooled cov shape: {pooled_cov.shape}")
+print(f"pooled covariance: {pooled_cov}")
+
+# Inverse Covariance
+inv_pooled_cov = np.linalg.inv(pooled_cov)
+
+print(f"Inverse pooled covariance shape: {inv_pooled_cov.shape}")
+print(f"Inverse pooled covariance: {inv_pooled_cov}")
 
 class LinearDiscriminantAnalysis:
     def __init__(self):
