@@ -113,6 +113,19 @@ for i in range(N_SAMPLES):
 # print(f"Sample mean vector: {mean[:10]}")
 # print(f"Sample numpy mean vector: {mean_np[:10]}")
 
+# Prior
+prior = np.zeros((N_CLASSES))
+classes_num = [class0_num, class1_num, class2_num, class3_num]
+
+for i in range(N_CLASSES):
+    prior[i] = classes_num[i] / N_SAMPLES
+
+print(f"The prior value for class 0: {prior[0]}")
+print(f"The prior value for class 1: {prior[1]}")
+print(f"The prior value for class 2: {prior[2]}")
+print(f"The prior value for class 3: {prior[3]}")
+print(f"Sum of priors: {np.sum(prior)}")
+
 class LinearDiscriminantAnalysis:
     def __init__(self):
         ...
