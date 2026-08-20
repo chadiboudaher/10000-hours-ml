@@ -58,7 +58,29 @@ for i in range(N_SAMPLES):
         idx_3 += 1
 
 # Print sample data from each class
-print(f"Sample data class 1: {X_0[0]}")
+print(f"Sample data class 0: {X_0[0]}")
+print(f"Sample data class 1: {X_0[1]}")
+print(f"Sample data class 2: {X_0[2]}")
+print(f"Sample data class 3: {X_0[3]}")
+
+print("=================================================")
+
+print(f"Shape of X_0: {X_0.shape}")
+print(f"Shape of X_0.T: {X_0.T.shape}")
+print(f"Mean of X_0.T: {np.mean(X_0.T)}")
+print(f"Mean of X_0 with axis=0: {np.mean(X_0, axis=0)}")
+
+print("=================================================")
+
+# Mean per class
+class_mean = np.zeros((N_CLASSES, N_FEATURES))
+# for i in range(N_CLASSES):
+class_mean[0] = np.mean(X_0, axis=0)
+class_mean[1] = np.mean(X_1, axis=0)
+class_mean[2] = np.mean(X_2, axis=0)
+class_mean[3] = np.mean(X_3, axis=0)
+
+print(class_mean)
 
 
 # print(X[:10])
@@ -81,7 +103,6 @@ for i in range(N_SAMPLES):
 mean_np = np.zeros((N_SAMPLES))
 # print(f"Mean numpy shape: {mean_np.shape}")
 
-feature_mean_np = 0
 for i in range(N_SAMPLES):
     feature_mean_np = 0
     feature_mean_np = np.mean(X[i])
@@ -91,9 +112,6 @@ for i in range(N_SAMPLES):
 
 # print(f"Sample mean vector: {mean[:10]}")
 # print(f"Sample numpy mean vector: {mean_np[:10]}")
-
-# Mean per class
-# class_mean = np.
 
 class LinearDiscriminantAnalysis:
     def __init__(self):
