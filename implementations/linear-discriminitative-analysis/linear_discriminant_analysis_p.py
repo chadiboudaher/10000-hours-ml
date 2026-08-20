@@ -211,7 +211,9 @@ class LinearDiscriminantAnalysis:
                 (X_by_class[i][:counts[i]] - self.means_[i]) / counts[i]
             )
 
+        reg = 1e-6
         self.pooled_covariance_ = np.zeros((n_features, n_features))
+        self.pooled_covariance_ += reg * np.eye(n_features)
 
         for i in range(n_classes):
             self.pooled_covariance_ += (counts[i] / n_samples) * cov[i]
