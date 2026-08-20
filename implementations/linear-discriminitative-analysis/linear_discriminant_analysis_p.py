@@ -1,4 +1,6 @@
 import numpy as np
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as SKLDA
+
 
 RANDOM_SEED = 42
 
@@ -30,10 +32,10 @@ for i in range(N_SAMPLES):
         class3_num +=1
 
 # Number of samples per class
-print(f"Number samples for class 0: {class0_num}")
-print(f"Number samples for class 1: {class1_num}")
-print(f"Number samples for class 2: {class2_num}")
-print(f"Number samples for class 3: {class3_num}")
+# print(f"Number samples for class 0: {class0_num}")
+# print(f"Number samples for class 1: {class1_num}")
+# print(f"Number samples for class 2: {class2_num}")
+# print(f"Number samples for class 3: {class3_num}")
 
 # Divide Sample Data per class
 X_0 = np.zeros((class0_num, N_FEATURES))
@@ -58,17 +60,17 @@ for i in range(N_SAMPLES):
         idx_3 += 1
 
 # Print sample data from each class
-print(f"Sample data class 0: {X_0[0]}")
-print(f"Sample data class 1: {X_0[1]}")
-print(f"Sample data class 2: {X_0[2]}")
-print(f"Sample data class 3: {X_0[3]}")
+# print(f"Sample data class 0: {X_0[0]}")
+# print(f"Sample data class 1: {X_0[1]}")
+# print(f"Sample data class 2: {X_0[2]}")
+# print(f"Sample data class 3: {X_0[3]}")
 
 print("=================================================")
 
-print(f"Shape of X_0: {X_0.shape}")
-print(f"Shape of X_0.T: {X_0.T.shape}")
-print(f"Mean of X_0.T: {np.mean(X_0.T)}")
-print(f"Mean of X_0 with axis=0: {np.mean(X_0, axis=0)}")
+# print(f"Shape of X_0: {X_0.shape}")
+# print(f"Shape of X_0.T: {X_0.T.shape}")
+# print(f"Mean of X_0.T: {np.mean(X_0.T)}")
+# print(f"Mean of X_0 with axis=0: {np.mean(X_0, axis=0)}")
 
 print("=================================================")
 
@@ -80,8 +82,8 @@ class_mean[1] = np.mean(X_1, axis=0)
 class_mean[2] = np.mean(X_2, axis=0)
 class_mean[3] = np.mean(X_3, axis=0)
 
-print(f"Class mean shape: {class_mean.shape}")
-print(class_mean)
+# print(f"Class mean shape: {class_mean.shape}")
+# print(class_mean)
 
 
 # print(X[:10])
@@ -135,10 +137,10 @@ cov[1] = (X_1 - class_mean[1]).T @ (X_1 - class_mean[1]) / class1_num
 cov[2] = (X_2 - class_mean[2]).T @ (X_2 - class_mean[2]) / class2_num
 cov[3] = (X_3 - class_mean[3]).T @ (X_3 - class_mean[3]) / class3_num
 
-print(f"Cov[0] shape: {cov[0].shape}")
-print(f"Cov[1] shape: {cov[1].shape}")
-print(f"Cov[2] shape: {cov[2].shape}")
-print(f"Cov[3] shape: {cov[3].shape}")
+# print(f"Cov[0] shape: {cov[0].shape}")
+# print(f"Cov[1] shape: {cov[1].shape}")
+# print(f"Cov[2] shape: {cov[2].shape}")
+# print(f"Cov[3] shape: {cov[3].shape}")
 # print(f"Covariance Matrix: {cov}")
 
 pooled_cov = (
@@ -148,14 +150,14 @@ pooled_cov = (
     (class3_num/N_SAMPLES) * cov[3]
 )
 
-print(f"pooled cov shape: {pooled_cov.shape}")
-print(f"pooled covariance: {pooled_cov}")
+# print(f"pooled cov shape: {pooled_cov.shape}")
+# print(f"pooled covariance: {pooled_cov}")
 
 # Inverse Covariance
 inv_pooled_cov = np.linalg.inv(pooled_cov)
 
-print(f"Inverse pooled covariance shape: {inv_pooled_cov.shape}")
-print(f"Inverse pooled covariance: {inv_pooled_cov}")
+# print(f"Inverse pooled covariance shape: {inv_pooled_cov.shape}")
+# print(f"Inverse pooled covariance: {inv_pooled_cov}")
 
 class LinearDiscriminantAnalysis:
     def __init__(self):
@@ -173,7 +175,7 @@ class LinearDiscriminantAnalysis:
 
         self.classes_ = np.unique(y)
         classes = np.unique(y)
-        counts = np.zeros((n_classes))
+        counts = np.zeros((n_classes), dtype=int)
 
         for i in range(n_samples):
             cls_index = np.where(classes == y[i])[0][0]
@@ -184,7 +186,7 @@ class LinearDiscriminantAnalysis:
 
         class_to_idx = {cls: idx for idx, cls in enumerate(classes)}
 
-        row_trackers = np.zeros(n_classes)
+        row_trackers = np.zeros(n_classes, dtype=int)
 
         for i in range(n_samples):
             cls = y[i]
@@ -235,3 +237,18 @@ class LinearDiscriminantAnalysis:
         scores = X @ self.coef_.T + self.intercept_
         
         return self.classes_[np.argmax(scores, axis=1)]
+
+lda = LinearDiscriminantAnalysis()
+lda.fit(X, y)
+
+predictions = lda.predict(X)
+
+accuracy = np.mean(predictions == y)
+print(f"Training accuracy: {accuracy:.4f}")
+
+sk_lda = SKLDA()
+sk_lda.fit(X, y)
+sk_preds = sk_lda.predict(X)
+sk_accuracy = np.mean(sk_preds == y)
+print(f"sklearn accuracy: {sk_accuracy:.4f}")
+print(f"Match? {np.all(predictions == sk_preds)}")
