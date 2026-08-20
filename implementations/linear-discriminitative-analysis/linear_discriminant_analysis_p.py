@@ -189,3 +189,13 @@ class LinearDiscriminantAnalysis:
 
             X_by_class[cls_idx][row_trackers[cls_idx]] = X[i]
             row_trackers[cls_idx] += 1
+
+        self.means_ = np.zeros((n_classes, n_features))
+
+        for i in range(n_classes):
+            self.means_[i] = np.mean(X_by_class[i][:counts[i]], axis=0)
+
+        self.prior_ = np.zeros((n_classes))
+
+        for i in range(n_classes):
+            self.prior_[i] = counts[i] / n_samples
