@@ -230,3 +230,8 @@ class LinearDiscriminantAnalysis:
                 self.inv_pooled_cov_ @ 
                 self.means_[i] + np.log(self.prior_[i])
             )
+
+    def predict(self, X):
+        scores = X @ self.coef_.T + self.intercept_
+        
+        return self.classes_[np.argmax(scores, axis=1)]
