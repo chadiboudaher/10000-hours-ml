@@ -51,3 +51,15 @@ try:
     result = C + D
 except ValueError as e:
     print(f"Error: {e}")
+
+X_train = np.random.randn(800, 20)
+X_test = np.random.randn(200, 20)
+
+X_train_batch = np.expand_dims(X_train, axis=0)
+X_test_batch = np.expand_dims(X_test, axis=0)
+
+print(f"Original X_train shape: {X_train.shape}")
+print(f"batch X_train shape: {X_train_batch.shape}")
+
+print(f"Original X_test shape: {X_test.shape}")
+print(f"batch X_test shape: {X_test_batch.shape}")
