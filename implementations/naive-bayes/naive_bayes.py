@@ -1,3 +1,4 @@
+import math
 import numpy as np
 
 RANDOM_SEED = 42
@@ -51,6 +52,21 @@ class GaussianNaiveBayes:
         print(f"Variances shape: {self.variances_.shape}")
         print(f"Priors: {self.priors_}")
         print(f"Classes: {self.classes_}")
+
+    def predict(self, X):
+        n_samples = X.shape[0]
+        n_classes = len(self.classes_)
+
+        deltas = np.zeros((n_samples, n_classes))
+
+        for idx, class_label in enumerate(self.classes_):
+            for j in range(X.shape[1]):
+                deltas[:, idx] += (
+                    -0.5 * np.log(2*math.pi*self.variances_[idx, j]) -
+                    ((X[:, j] - self.means_[idx, j]) ** 2 / 2 * self.variances_[idx, j])
+                )
+
+        return self.classes_[np.argmax(deltas, axis=1)]
 
 GNB = GaussianNaiveBayes()
 GNB.fit(X, y)
