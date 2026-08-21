@@ -10,10 +10,12 @@ N_FEATURES = 7
 N_CLASSES = 4
 N_SAMPLES = 500
 
-X = np.zeros((N_SAMPLES, N_FEATURES))
-# print(X)
-
+X = np.random.randn(N_SAMPLES, N_FEATURES)
 y = np.random.randint(0, N_CLASSES, N_SAMPLES)
+
+for i in range(N_CLASSES):
+    mask = y == i
+    X[mask] += np.random.randn(N_FEATURES) * 2
 
 class QuadraticDiscriminantAnalysis:
     """
@@ -82,7 +84,7 @@ class QuadraticDiscriminantAnalysis:
             cov_reg = self.covariance_[i] + reg * np.eye(n_features)
             self.inv_cov_[i] = np.linalg.inv(cov_reg)
             self.log_det_[i] = np.linalg.det(cov_reg)
-            
+
         self.score_ = np.zeros((n_samples, n_classes))
 
         for i in range(n_classes):
@@ -94,21 +96,33 @@ class QuadraticDiscriminantAnalysis:
             )
 
     def predict(self, X):
-        scores = self.score_
+        n_samples = X.shape[0]
+        n_classes = len(self.classes_)
+        scores = np.zeros((n_samples, n_classes))
+
+        for i in range(n_classes):
+            quadratic = -0.5 * np.sum((X @ self.inv_cov_[i]) * X, axis=1)
+            linear = X @ self.inv_cov_[i] @ self.means_[i]
+            intercept = (
+                -0.5 * self.means_[i].T @ self.inv_cov_[i] @ self.means_[i] -
+                0.5 * np.log(self.log_det_[i]) + np.log(self.prior_[i])
+            )
+
+            scores[:, i] = quadratic + linear + intercept
         
         return self.classes_[np.argmax(scores, axis=1)]
 
-lda = QuadraticDiscriminantAnalysis()
-lda.fit(X, y)
+qda = QuadraticDiscriminantAnalysis()
+qda.fit(X, y)
 
-predictions = lda.predict(X)
+predictions = qda.predict(X)
 
 accuracy = np.mean(predictions == y)
 print(f"Training accuracy: {accuracy:.4f}")
 
-sk_lda = SKLDA()
-sk_lda.fit(X, y)
-sk_preds = sk_lda.predict(X)
+sk_qda = SKLDA()
+sk_qda.fit(X, y)
+sk_preds = sk_qda.predict(X)
 sk_accuracy = np.mean(sk_preds == y)
 print(f"sklearn accuracy: {sk_accuracy:.4f}")
 print(f"Match? {np.all(predictions == sk_preds)}")
