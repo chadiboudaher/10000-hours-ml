@@ -63,10 +63,16 @@ class GaussianNaiveBayes:
             for j in range(X.shape[1]):
                 deltas[:, idx] += (
                     -0.5 * np.log(2*math.pi*self.variances_[idx, j]) -
-                    ((X[:, j] - self.means_[idx, j]) ** 2 / 2 * self.variances_[idx, j])
+                    (((X[:, j] - self.means_[idx, j]) ** 2) / (2 * self.variances_[idx, j]))
                 )
 
         return self.classes_[np.argmax(deltas, axis=1)]
 
 GNB = GaussianNaiveBayes()
 GNB.fit(X, y)
+
+y_pred = GNB.predict(X)
+
+# Calculate Accuracy
+accuracy = np.mean(y_pred == y)
+print(f"Accuracy on synthetic data: {accuracy}")
