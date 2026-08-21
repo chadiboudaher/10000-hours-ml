@@ -91,7 +91,7 @@ sk_test_pred = GNB_sk.predict(X_test)
 
 sk_test_acc = np.mean(sk_test_pred == y_test)
 
-print(f"sklearn QDA - Test accuracy: {sk_test_acc:.4f}")
+print(f"sklearn GaussianNB - Test accuracy: {sk_test_acc:.4f}")
 
 GNB = GaussianNaiveBayes()
 GNB.fit(X_train, y_train)
@@ -102,5 +102,5 @@ test_pred = GNB.predict(X_test)
 train_acc = np.mean(train_pred == y_train)
 test_acc = np.mean(test_pred == y_test)
 
-print(f"Custom QDA - Train accuracy: {train_acc:.4f}")
-print(f"Custom QDA - Test accuracy: {test_acc:.4f}")
+print(f"Custom GaussianNB - Train accuracy: {train_acc:.4f}")
+print(f"Custom GaussianNB - Test accuracy: {test_acc:.4f}")
