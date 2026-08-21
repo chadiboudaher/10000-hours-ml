@@ -1,5 +1,7 @@
 import numpy as np
 
+# Basic shape operations
+
 a = np.array([1, 2, 3, 4, 5])
 b = np.array([[1, 2, 3], [4, 5, 6]])
 c = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
@@ -11,3 +13,17 @@ print(f"c shape: {c.shape}")
 print(f"a size: {a.size}")
 print(f"b size: {b.size}")
 print(f"c size: {c.size}")
+
+# Reshaping Arrays
+
+X = np.random.randn(100, 64)
+print(f"Original: {X.shape}")
+
+X_batch = X.reshape(10, 10, 64)
+print(f"Batch reshape: {X_batch.shape}")
+
+X_flat = X.reshape(100, -1)
+print(f"Flattened: {X_flat.shape}")
+
+X_cnn = X.reshape(100, 8, 8, 1)
+print(f"CNN format: {X_cnn.shape}")
