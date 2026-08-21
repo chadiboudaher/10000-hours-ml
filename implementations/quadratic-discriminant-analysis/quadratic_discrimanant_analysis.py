@@ -1,5 +1,7 @@
 import numpy as np
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as SKLDA
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as SKQDA
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_classification
 
 
 RANDOM_SEED = 42
@@ -10,12 +12,12 @@ N_FEATURES = 7
 N_CLASSES = 4
 N_SAMPLES = 500
 
-X = np.random.randn(N_SAMPLES, N_FEATURES)
-y = np.random.randint(0, N_CLASSES, N_SAMPLES)
+# X = np.random.randn(N_SAMPLES, N_FEATURES)
+# y = np.random.randint(0, N_CLASSES, N_SAMPLES)
 
-for i in range(N_CLASSES):
-    mask = y == i
-    X[mask] += np.random.randn(N_FEATURES) * 2
+# for i in range(N_CLASSES):
+#     mask = y == i
+#     X[mask] += np.random.randn(N_FEATURES) * 2
 
 class QuadraticDiscriminantAnalysis:
     """
@@ -112,17 +114,35 @@ class QuadraticDiscriminantAnalysis:
         
         return self.classes_[np.argmax(scores, axis=1)]
 
+X, y = make_classification(
+    n_samples=1000,
+    n_features=7,
+    n_classes=4,
+    n_clusters_per_class=1,
+    n_redundant=0,
+    random_state=RANDOM_SEED
+)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=RANDOM_SEED
+)
+
 qda = QuadraticDiscriminantAnalysis()
-qda.fit(X, y)
+qda.fit(X_train, y_train)
 
-predictions = qda.predict(X)
+train_pred = qda.predict(X_train)
+test_pred = qda.predict(X_test)
 
-accuracy = np.mean(predictions == y)
-print(f"Training accuracy: {accuracy:.4f}")
+train_acc = np.mean(train_pred == y_train)
+test_acc = np.mean(test_pred == y_test)
 
-sk_qda = SKLDA()
-sk_qda.fit(X, y)
-sk_preds = sk_qda.predict(X)
-sk_accuracy = np.mean(sk_preds == y)
-print(f"sklearn accuracy: {sk_accuracy:.4f}")
-print(f"Match? {np.all(predictions == sk_preds)}")
+print(f"Custom QDA - Train accuracy: {train_acc:.4f}")
+print(f"Custom QDA - Test accuracy: {test_acc:.4f}")
+
+sk_qda = SKQDA(reg_param=0.0)
+sk_qda.fit(X_train, y_train)
+sk_test_pred = sk_qda.predict(X_test)
+sk_test_acc = np.mean(sk_test_pred == y_test)
+
+print(f"sklearn QDA - Test accuracy: {sk_test_acc:.4f}")
+print(f"Match? {np.all(test_pred == sk_test_pred)}")
