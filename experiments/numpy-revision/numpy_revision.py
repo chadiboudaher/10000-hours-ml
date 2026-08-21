@@ -27,3 +27,27 @@ print(f"Flattened: {X_flat.shape}")
 
 X_cnn = X.reshape(100, 8, 8, 1)
 print(f"CNN format: {X_cnn.shape}")
+
+# Broadcasting Rules Practice
+
+X = np.random.randn(10, 5)
+w = np.random.randn(5, 1)
+
+y = X @ w
+print(f"Matrix multiplication: {y.shape}")
+
+bias = np.array([0.5])
+y_with_bias = y + bias
+print(f"With bias: {y_with_bias.shape}")
+
+A = np.random.randn(10, 5)
+B = np.random.randn(5,)
+result = A + B
+print(f"Broadcasted: {result.shape}")  # (10, 5)
+
+try:
+    C = np.random.randn(10, 5)
+    D = np.random.randn(3,)
+    result = C + D
+except ValueError as e:
+    print(f"Error: {e}")
