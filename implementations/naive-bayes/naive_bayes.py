@@ -1,5 +1,8 @@
 import math
 import numpy as np
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
@@ -9,19 +12,19 @@ N_SAMPLES = 500
 N_FEATURES = 5
 
 # Input Data
-X = np.random.randn(N_SAMPLES, N_FEATURES)
+# X = np.random.randn(N_SAMPLES, N_FEATURES)
 
 # Output Data
-y = np.random.randint(0, N_CLASSES, N_SAMPLES)
+# y = np.random.randint(0, N_CLASSES, N_SAMPLES)
 
-for i in range(N_CLASSES):
-    mask = y == i
-    X[mask] += np.random.randn(N_FEATURES) * 2
+# for i in range(N_CLASSES):
+#     mask = y == i
+#     X[mask] += np.random.randn(N_FEATURES) * 2
 
-print(f"input data X shape: {X.shape}")
-print(f"Output data y shape: {y.shape}")
-print(f"Input data X sample: {X[0]}")
-print(f"Output data y sample: {y[:10]}")
+# print(f"input data X shape: {X.shape}")
+# print(f"Output data y shape: {y.shape}")
+# print(f"Input data X sample: {X[0]}")
+# print(f"Output data y sample: {y[:10]}")
 
 class GaussianNaiveBayes:
     def __init__(self):
@@ -48,10 +51,10 @@ class GaussianNaiveBayes:
             self.variances_[i] = np.var(X_cls, axis=0)
             self.priors_[i] = len(X_cls) / n_samples
 
-        print(f"Means shape: {self.means_.shape}")
-        print(f"Variances shape: {self.variances_.shape}")
-        print(f"Priors: {self.priors_}")
-        print(f"Classes: {self.classes_}")
+        # print(f"Means shape: {self.means_.shape}")
+        # print(f"Variances shape: {self.variances_.shape}")
+        # print(f"Priors: {self.priors_}")
+        # print(f"Classes: {self.classes_}")
 
     def predict(self, X):
         n_samples = X.shape[0]
@@ -68,11 +71,36 @@ class GaussianNaiveBayes:
 
         return self.classes_[np.argmax(deltas, axis=1)]
 
+X, y = make_classification(
+    n_samples=1000,
+    n_features=7,
+    n_classes=4,
+    n_clusters_per_class=1,
+    n_redundant=0,
+    random_state=RANDOM_SEED
+)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=RANDOM_SEED
+)
+
+GNB_sk = GaussianNB()
+GNB_sk.fit(X_train, y_train)
+
+sk_test_pred = GNB_sk.predict(X_test)
+
+sk_test_acc = np.mean(sk_test_pred == y_test)
+
+print(f"sklearn QDA - Test accuracy: {sk_test_acc:.4f}")
+
 GNB = GaussianNaiveBayes()
-GNB.fit(X, y)
+GNB.fit(X_train, y_train)
 
-y_pred = GNB.predict(X)
+train_pred = GNB.predict(X_train)
+test_pred = GNB.predict(X_test)
 
-# Calculate Accuracy
-accuracy = np.mean(y_pred == y)
-print(f"Accuracy on synthetic data: {accuracy}")
+train_acc = np.mean(train_pred == y_train)
+test_acc = np.mean(test_pred == y_test)
+
+print(f"Custom QDA - Train accuracy: {train_acc:.4f}")
+print(f"Custom QDA - Test accuracy: {test_acc:.4f}")
