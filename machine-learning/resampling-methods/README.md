@@ -21,3 +21,21 @@ The validation set is not the same as the test set. If we use the validation set
 - **High Variance**: The validation score is highly dependent on which specific data points end up in the validation set.
 - **Reduced Training data**: Bad for small datasets. It is prefferably used on large datasets.
 - Unstable model selection: Because of high variance, if we repeat the random split multiple times, we might end up choosing a completely different "best" model each time.
+
+## 2. Leave-One-Out Cross-Validation
+
+`LOOCV` is an extreme form of k-fold cross-validation where k = n (The number of sample in your dataset). For each iteration, we train on all samples except one and validate on the single left-out sample. we repeat this process n times, once for each sample, and average the results.
+
+### 2.1 Advantages of LOOCV
+
+- **No randomness**: Results are deterministic (same every time).
+- **Maximum training data**: Almost all data is being used except one samples.
+- **Best for small datasets**.
+- **Unbiased estimate**.
+
+### 2.2 Disadvantages of LOOCV
+
+- **Computationally expensive**: train n models.
+- **high variance**.
+- **Not for large datasets**.
+- **no parallelization**.
