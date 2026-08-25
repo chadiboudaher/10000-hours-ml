@@ -39,3 +39,29 @@ The validation set is not the same as the test set. If we use the validation set
 - **high variance**.
 - **Not for large datasets**.
 - **no parallelization**.
+
+## 3. K-Fold Cross-Validation
+
+**K-Fold Cross-Validation** is a resampling method that splits your dataset into **k equal-sized folds**. You train your model on **k-1 folds** and validate on the 1 remaining fold, repeating this process k times.
+
+_k_: Number of groups that a given data sample is to be split into.
+
+### 3.1 Procedure
+
+1. Shuffle the dataset randomly.
+2. Split the dataset into k groups.
+3. For each unique group:
+   1. Take the group as a hold out or test data set
+   2. Take the remaining groups as a training data set
+   3. Fit a model on the training set and evaluate it on the test set
+   4. Retain the evaluation score and discard the model
+4. Summarize the skill of the model using the sample of model evaluation scores
+
+### Configuration of K
+
+The k value must be chosen carefully for your data sample.
+
+Three common tactics for choosing a value for k are as follows:
+
+1. **K=10**: The value for k is fixed to 10, a value that has been found through experimentation to generally result in a model skill estimate with low bias a modest variance.
+2. LOOCV
