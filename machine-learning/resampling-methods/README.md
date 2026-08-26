@@ -73,3 +73,7 @@ Putting computational issues aside, a less obvious but potentially more importan
 in LOOCV, training is done on n-1 observations, which results in an unbiased estimates of the test error. Unlike k-fold CV, which lead to an intermediate level of bias, since each training set contains $\frac{(k-1)n}{k}$ observations.
 
 Therefore, from the perspective of bias reduction, it is clear that LOOCV is to be preferred to k-fold CV, But the test error estimate resulting from LOOCV tends to have higher variance.
+
+## 5. Cross-Validation on Classification Problems
+
+In classification, adding polynomial terms can improve test performance up to a point, but too much flexibility (higher-degree polynomials) leads to overfitting, and cross-validation helps you find that sweet spot.
