@@ -38,11 +38,12 @@ Classes: 3
 
 ### 4.1 Summary
 
-| Model | Accuracy | Precision | Recall | F1-Score | Train Time (s) | Pred Time (s) |
-| LDA | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 0.0019 | 0.0003 |
-| Logistic Regression | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 0.0138 | 0.0005 |
-| QDA | 0.9722 | 0.9741 | 0.9722 | 0.9718 | 0.0012 | 0.0003 |
-| LDA | 0.9722 | 0.9741 | 0.9722 | 0.9722 | 0.0012 | 0.0003 |
+| Model               | Accuracy | Precision | Recall | F1-Score | Train Time (s) | Pred Time (s) |
+| ------------------- | -------- | --------- | ------ | -------- | -------------- | ------------- |
+| LDA                 | 1.0000   | 1.0000    | 1.0000 | 1.0000   | 0.0019         | 0.0003        |
+| Logistic Regression | 1.0000   | 1.0000    | 1.0000 | 1.0000   | 0.0138         | 0.0005        |
+| QDA                 | 0.9722   | 0.9741    | 0.9722 | 0.9718   | 0.0012         | 0.0003        |
+| Naive Bayes         | 0.9722   | 0.9741    | 0.9722 | 0.9722   | 0.0012         | 0.0003        |
 
 ## 5. Key Findings
 
@@ -72,5 +73,5 @@ Classes: 3
 
 ## 8. References
 
-1. (UCI Wine Dataset)[https://archive.ics.uci.edu/ml/datasets/wine]
-2. (An Introduction to Statistical Learning with Python)[https://www.statlearning.com/]
+1. [UCI Wine Dataset](https://archive.ics.uci.edu/ml/datasets/wine)
+2. James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). _An Introduction to Statistical Learning with Python_. Springer.
