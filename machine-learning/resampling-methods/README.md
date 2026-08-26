@@ -65,3 +65,11 @@ Three common tactics for choosing a value for k are as follows:
 
 1. **K=10**: The value for k is fixed to 10, a value that has been found through experimentation to generally result in a model skill estimate with low bias a modest variance.
 2. LOOCV
+
+## 4. Bias-Variance Trade-Off for k-Fold Cross-validation
+
+Putting computational issues aside, a less obvious but potentially more important advantage of k-fold CV is that it often gives more accuracte estimates of the test error rate than does LOOCV. This has to do with a bias-variance trade-off.
+
+in LOOCV, training is done on n-1 observations, which results in an unbiased estimates of the test error. Unlike k-fold CV, which lead to an intermediate level of bias, since each training set contains $\frac{(k-1)n}{k}$ observations.
+
+Therefore, from the perspective of bias reduction, it is clear that LOOCV is to be preferred to k-fold CV, But the test error estimate resulting from LOOCV tends to have higher variance.
