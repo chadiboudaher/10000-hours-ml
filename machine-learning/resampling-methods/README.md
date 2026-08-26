@@ -77,3 +77,11 @@ Therefore, from the perspective of bias reduction, it is clear that LOOCV is to 
 ## 5. Cross-Validation on Classification Problems
 
 In classification, adding polynomial terms can improve test performance up to a point, but too much flexibility (higher-degree polynomials) leads to overfitting, and cross-validation helps you find that sweet spot.
+
+## 6. The Bootstrap
+
+The **bootstrap** estimates how much your estimate would vary if you had gotten a different random sample from the population.
+
+since we can't collect X new samples from the real world, we fake it by resampling from our data with replacement (with replacement, means we randomly choose a sample from the dataset, and that sample can be chosen again), with this new data we calculate something it could be **mean**, **median**, **standart deviation**, etc. We keep track of the calculations. After doing botstrapping for 1000 of times and adding them to the histogram creating a distribution.
+
+So **Bootstrapping** is that we can apply it to any statistic to create a histogram of what might happen if we repeated the experiment a bunch of times and we can use that histogram to calculate stuff like **standart errors** and **confidence intervals** without having to worry about wether or not there is a nice formula.
