@@ -18,7 +18,7 @@ There are many method can be used to fit the model:
 
 ### Best Subset Selection
 
-To perform _best subset selection_, we fit a seperate squares regression for each possible combination of the p predictors. We then look at all of the resultingmodels, with the goal of identifying the one that is **best**.
+To perform _best subset selection_, we fit a seperate squares regression for each possible combination of the p predictors. We then look at all of the resulting models, with the goal of identifying the one that is **best**.
 
 The problem of selecting the best model from among the 2^P possibilities considered by best subset selection is not trivial.
 and it is usually broken up into 2 stages.
