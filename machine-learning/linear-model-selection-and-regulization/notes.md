@@ -32,3 +32,16 @@ and it is usually broken up into 2 stages.
 3. Select a single best model from among using the prediction error on a validation set.
 
 But with the increase in number of p, the number of possibilities increase, increasing the computational complexity. There are computational shortcuts, so called branch and bound techniques for eliminating some choices. but these have their limitations as p gets large. They also only work for least squares linear regression. We present computationally efficient alternatives to best subset selection next.
+
+## Stepwise Selection
+
+For computational reasons, best subset selection cannot be applied with very large p. It may also struggle from statistical problems when p is large.
+
+**Stepwise selection**, explore a far more restricted set of models, are attractive alternatives to best subset selection.
+
+### Forward Stepwise selection
+
+_Forward stepwise selection_ is a computationally efficient alternative to best subset selection.
+
+Forward stepwise selection begins with a model containing no predictors, and then adds predictors to the model, one-at-a-time, until all of the predictors are in the model. In particular, at each step the variable that gives the greatest additional
+improvement to the fit is added to the model. It fit $1+\frac{p(p+1)}{2}$ models.
