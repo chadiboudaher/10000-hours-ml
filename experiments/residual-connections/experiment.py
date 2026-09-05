@@ -134,3 +134,33 @@ class ResidualBlock(nn.Module):
         out = self.relu(out)
 
         return out
+
+class CNN(nn.Module):
+    def __init__(self, block, num_blocks):
+        super().__init__()
+
+        self.stem = nn.Sequential(
+            nn.Conv2d(
+                3,
+                64,
+                kernel_size=3,
+                padding=1,
+                bias=False
+            ),
+            nn.BatchNorm2d(64),
+            nn.ReLU()
+        )
+
+        self.blocks = nn.Sequential(
+            *[block(64) for _ in range(num_blocks)]
+        )
+
+        self.pool = nn.AdaptiveAvgPool2d(1)
+        self.fc = nn.Linear(64, 10)
+
+    def forward(self, x):
+        x = self.stem(x)
+        x = self.blocks(x)
+        x = self.pool(x)
+        x = torch.flatten(x, 1)
+        return self.fc(x)
