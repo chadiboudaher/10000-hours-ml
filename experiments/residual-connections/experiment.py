@@ -69,3 +69,33 @@ test_loader = DataLoader(
     shuffle=False,
     num_workers=2
 )
+
+
+class PlainBlock(nn.Module):
+    def __init__(self, channels):
+        super().__init__()
+
+        self.block = nn.Sequential(
+            nn.Conv2d(
+                channels,
+                channels,
+                kernel_size=3,
+                padding=1,
+                bias=False
+            ),
+            nn.BatchNorm2d(channels),
+            nn.ReLU(),
+
+            nn.Conv2d(
+                channels,
+                channels,
+                kernel_size=3,
+                padding=1,
+                bias=False
+            ),
+            nn.BatchNorm2d(channels),
+            nn.ReLU()
+        )
+
+    def forward(self, x):
+        return self.block(x)
