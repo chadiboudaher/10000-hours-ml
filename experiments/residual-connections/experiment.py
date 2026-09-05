@@ -99,3 +99,38 @@ class PlainBlock(nn.Module):
 
     def forward(self, x):
         return self.block(x)
+
+class ResidualBlock(nn.Module):
+    def __init__(self, channels):
+        super().__init__()
+
+        self.conv1 = nn.Conv2d(
+            channels,
+            channels,
+            kernel_size=3,
+            padding=1,
+            bias=False
+        )
+        self.bn1 = nn.BatchNorm2d(channels)
+
+        self.conv2 = nn.Conv2d(
+            channels,
+            channels,
+            kernel_size=3,
+            padding=1,
+            bias=False
+        )
+        self.bn2 = nn.BatchNorm2d(channels)
+
+        self.relu = nn.ReLU()
+
+    def forward(self, x):
+        identity = x
+
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+
+        out = out + identity
+        out = self.relu(out)
+
+        return out
