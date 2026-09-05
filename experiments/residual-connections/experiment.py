@@ -323,3 +323,25 @@ plt.savefig(
 )
 
 plt.show()
+
+
+
+for name, history in histories.items():
+    plt.plot(
+        range(1, EPOCHS + 1),
+        history["loss"],
+        label=name
+    )
+
+plt.xlabel("Epoch")
+plt.ylabel("Training Loss")
+plt.title("Training Loss: Plain vs Residual Networks")
+plt.legend()
+plt.grid()
+
+plt.savefig(
+    "results/training_loss.png",
+    bbox_inches="tight"
+)
+
+plt.show()
