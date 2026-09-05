@@ -246,3 +246,48 @@ def evaluate_model(model):
     test_accuracy = correct / total
 
     return test_loss, test_accuracy
+
+experiments = {
+    "Plain-4": (PlainBlock, 4),
+    "Plain-16": (PlainBlock, 16),
+    "Residual-4": (ResidualBlock, 4),
+    "Residual-16": (ResidualBlock, 16)
+}
+
+histories = {}
+results = []
+
+for name, (block, depth) in experiments.items():
+
+    print(f"\n{'=' * 50}")
+    print(f"Training {name}")
+    print(f"{'=' * 50}")
+
+    # Reset the random seed before model initialization
+    set_seed(SEED)
+
+    model = CNN(
+        block=block,
+        num_blocks=depth
+    ).to(device)
+
+    history = train_model(model)
+
+    test_loss, test_accuracy = evaluate_model(model)
+
+    histories[name] = history
+
+    results.append({
+        "model": name,
+        "blocks": depth,
+        "train_loss": history["loss"][-1],
+        "train_accuracy": history["accuracy"][-1],
+        "test_loss": test_loss,
+        "test_accuracy": test_accuracy
+    })
+
+    print(
+        f"{name} | "
+        f"Test Loss: {test_loss:.4f} | "
+        f"Test Accuracy: {test_accuracy:.4f}"
+    )
