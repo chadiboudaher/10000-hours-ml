@@ -301,3 +301,25 @@ results_df.to_csv(
 
 print("\nFinal Results")
 print(results_df)
+
+plt.figure(figsize=(10, 6))
+
+for name, history in histories.items():
+    plt.plot(
+        range(1, EPOCHS + 1),
+        history["accuracy"],
+        label=name
+    )
+
+plt.xlabel("Epoch")
+plt.ylabel("Training Accuracy")
+plt.title("Plain vs Residual Networks")
+plt.legend()
+plt.grid()
+
+plt.savefig(
+    "results/training_accuracy.png",
+    bbox_inches="tight"
+)
+
+plt.show()
