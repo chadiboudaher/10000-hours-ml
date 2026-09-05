@@ -164,3 +164,56 @@ class CNN(nn.Module):
         x = self.pool(x)
         x = torch.flatten(x, 1)
         return self.fc(x)
+
+def train_model(model):
+    criterion = nn.CrossEntropyLoss()
+
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=LEARNING_RATE
+    )
+
+    history = {
+        "loss": [],
+        "accuracy": []
+    }
+
+    for epoch in range(EPOCHS):
+        model.train()
+
+        running_loss = 0
+        correct = 0
+        total = 0
+
+        for images, labels in train_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+
+            optimizer.zero_grad()
+
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item() * images.size(0)
+
+            predicted = outputs.argmax(dim=1)
+
+            total += labels.size(0)
+            correct += predicted.eq(labels).sum().item()
+
+        epoch_loss = running_loss / total
+        epoch_accuracy = correct / total
+
+        history["loss"].append(epoch_loss)
+        history["accuracy"].append(epoch_accuracy)
+
+        print(
+            f"Epoch {epoch + 1}/{EPOCHS} "
+            f"Loss: {epoch_loss:.4f} "
+            f"Acc: {epoch_accuracy:.4f}"
+        )
+
+    return history
