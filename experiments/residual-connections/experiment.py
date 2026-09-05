@@ -291,3 +291,13 @@ for name, (block, depth) in experiments.items():
         f"Test Loss: {test_loss:.4f} | "
         f"Test Accuracy: {test_accuracy:.4f}"
     )
+
+results_df = pd.DataFrame(results)
+
+results_df.to_csv(
+    "results/results.csv",
+    index=False
+)
+
+print("\nFinal Results")
+print(results_df)
