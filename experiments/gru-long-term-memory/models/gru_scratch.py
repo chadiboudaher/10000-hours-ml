@@ -100,3 +100,24 @@ class RNNClassifier(nn.Module):
         logits = self.fc(h_last).squeeze(1)
 
         return logits
+
+class GRUClassifier(nn.Module):
+    def __init__(self, input_size=1, hidden_size=32):
+        super().__init__()
+
+        self.gru = nn.GRU(
+            input_size=input_size,
+            hidden_size=hidden_size,
+            batch_first=True
+        )
+
+        self.fc = nn.Linear(hidden_size, 1)
+
+    def forward(self, x):
+        output, h_n = self.gru(x)
+
+        h_last = h_n[-1]
+
+        logits = self.fc(h_last).squeeze(1)
+
+        return logits
