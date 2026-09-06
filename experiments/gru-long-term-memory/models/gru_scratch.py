@@ -41,3 +41,40 @@ class GRUCellScratch(nn.Module):
         )
 
         return h_t
+
+
+class GRUScratch(nn.Module):
+    def __init__(self, input_size, hidden_size):
+        super().__init__()
+
+        self.hidden_size = hidden_size
+        self.cell = GRUCellScratch(
+            input_size,
+            hidden_size
+        )
+
+    def forward(self, x):
+        batch_size = x.size(0)
+
+        h = torch.zeros(
+            batch_size,
+            self.hidden_size,
+            device=x.device
+        )
+
+        reset_gates = []
+        update_gates = []
+
+        for t in range(x.size(1)):
+            h, r_t, z_t, _ = self.cell(
+                x[:, t, :],
+                h
+            )
+
+            reset_gates.append(r_t)
+            update_gates.append(z_t)
+
+        reset_gates = torch.stack(reset_gates, dim=1)
+        update_gates = torch.stack(update_gates, dim=1)
+
+        return h, reset_gates, update_gates
