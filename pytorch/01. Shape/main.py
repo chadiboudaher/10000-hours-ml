@@ -71,4 +71,17 @@ print(f"the result is {x.flatten(end_dim=2).shape}")
 print("*"*20)
 
 print(f"the result is {x.flatten(end_dim=x.ndim-1).shape}")
+
+print("="*50)
+
+print(f"the new shape is {x.reshape(-1).shape}")
+print("*"*20)
+
+print(f"the new shape is {x.reshape(16, -1).shape}")
+print("*"*20)
+
+print(f"the new shape is {x.reshape(16, 3, -1).shape}")
+print("*"*20)
+
+print(f"the new shape is {x.reshape(16, 3, 32, -1).shape}")
 print("*"*20)
