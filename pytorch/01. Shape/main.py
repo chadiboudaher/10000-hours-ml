@@ -98,3 +98,38 @@ print("*"*20)
 print(f"the shape after squeeze is {x.squeeze(0).shape}")
 
 print("="*50)
+
+# Section 4 - permute, cat, and stack
+
+x = torch.randn(8, 30, 3, 112, 112)
+
+print(f"Shape BEFORE permutation: {x.shape}")
+print(f"Shape AFTER permutation: {x.permute(0, 2, 1, 3, 4).shape}")
+
+print("*"*20)
+
+print(f"Shape BEFORE permutation: {x.shape}")
+print(f"Shape AFTER permutation: {x.permute(1, 0, 2, 3, 4).shape}")
+
+print("="*50)
+
+a = torch.randn(4, 10, 2)
+b = torch.randn(4, 10, 2)
+
+print(f"{torch.cat([a, b], dim=0).shape}")
+print("*"*20)
+
+print(f"{torch.cat([a, b], dim=1).shape}")
+print("*"*20)
+
+print(f"{torch.cat([a, b], dim=2).shape}")
+
+print("="*50)
+
+a = torch.randn(4, 10)
+b = torch.randn(4, 10)
+
+print(f"{torch.stack([a, b], dim=0).shape}")
+print("*"*20)
+
+print(f"{torch.stack([a, b], dim=1).shape}")
