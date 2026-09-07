@@ -47,3 +47,28 @@ print(f"the shape of x[:, 0:1] is {x[:, 0:1].shape}")
 print(f"the shape of x[0, :, :32, :32] is {x[0, :, :32, :32].shape}")
 # Expected: [3, 32, 32]
 # True shape: [3, 32, 32]
+
+# Section 3 - reshape, flatten, unsqueeze, squeeze
+
+x = torch.randn(16, 3, 32, 32)
+
+print("="*50)
+
+print(f"{x.ndim}")
+print("*"*20)
+
+# [16, 3, 32, 32] -> 16 * 3 * 32 * 32
+print(f"the result is {x.flatten().shape}")
+print("*"*20)
+
+print(f"the result is {x.flatten(start_dim=1).shape}")
+print("*"*20)
+
+print(f"the result is {x.flatten(start_dim=2).shape}")
+print("*"*20)
+
+print(f"the result is {x.flatten(end_dim=2).shape}")
+print("*"*20)
+
+print(f"the result is {x.flatten(end_dim=x.ndim-1).shape}")
+print("*"*20)
