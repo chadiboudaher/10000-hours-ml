@@ -84,4 +84,17 @@ print(f"the new shape is {x.reshape(16, 3, -1).shape}")
 print("*"*20)
 
 print(f"the new shape is {x.reshape(16, 3, 32, -1).shape}")
+
+print("="*50)
+
+x = torch.randn(1, 16, 1, 128)
+
+print(f"the shape after squeeze is {x.squeeze().shape}")
 print("*"*20)
+
+print(f"the shape after squeeze is {x.squeeze(1).shape}")
+print("*"*20)
+
+print(f"the shape after squeeze is {x.squeeze(0).shape}")
+
+print("="*50)
