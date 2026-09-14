@@ -34,8 +34,15 @@ model = VanillaRNN(
     embedding_dim=EMBEDDING_DIM
 )
 
-loss = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(
     model.parameters(),
     lr=1e-3
 )
+
+# X, y = next(iter(loader))
+
+# logits = model(X)
+
+# res = criterion(logits, y)
+# print(res)
