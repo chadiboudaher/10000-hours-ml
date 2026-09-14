@@ -46,3 +46,47 @@ optimizer = optim.Adam(
 
 # res = criterion(logits, y)
 # print(res)
+
+def train_model(
+        epochs,
+        dataloader,
+        criterion: nn,
+        optimizer: optim,
+        model: nn.Module
+):
+    model.train()
+    loss_history = []
+    accuracy_history = []
+    
+    for epoch in range(epochs):
+        epoch_loss = 0.0
+        correct = 0
+        total = 0
+        for X, y in dataloader:
+            optimizer.zero_grad()
+
+            logits = model(X)
+
+            loss = criterion(logits, y)
+            predictions = torch.argmax(logits, dim=1)
+
+            correct += (predictions == y).sum().item()
+            total += y.size(0)
+
+            loss.backward()
+
+            optimizer.step()
+
+            epoch_loss += loss.item()
+
+        average_loss = epoch_loss / len(dataloader)
+        epoch_accuracy = correct / total
+
+        loss_history.append(average_loss)
+        accuracy_history.append(epoch_accuracy)
+
+        print(
+            f"Epoch: {epoch + 1}" |
+            f"Loss: {average_loss:.4f}" |
+            f"Accuracy: {epoch_accuracy:.2f}"
+        )
