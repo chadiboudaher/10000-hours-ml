@@ -8,6 +8,7 @@ Inputs:
     sequence (for example: 0-9, etc)
 """
 
+import torch
 import numpy as np
 
 RANDOM_SEED = 42
@@ -22,3 +23,5 @@ data = np.random.randint(0, NUM_CLASSES, SEQUENCE_LENGTH)
 
 print(f"data shape: {data.shape}")
 print(f"data sample: {data[:5]}")
+data = torch.from_numpy(data)
+print(f"data tensor: {data[:5]}")
