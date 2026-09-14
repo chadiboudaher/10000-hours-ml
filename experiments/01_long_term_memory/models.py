@@ -79,3 +79,9 @@ X, y = next(iter(loader))
 
 logits = model(X)
 print(logits)
+
+loss = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(
+    model.parameters(),
+    lr=1e-3
+)
