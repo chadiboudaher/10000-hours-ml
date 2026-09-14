@@ -11,11 +11,13 @@ Inputs:
 import torch
 import numpy as np
 from torch.utils.data import Dataset
+from torch.utils.data import DataLoader
 
 NUM_SAMPLES = 100
 RANDOM_SEED = 42
 SEQUENCE_LENGTH = 50
 NUM_CLASSES = 10
+BATCH_SIZE = 16
 
 np.random.seed(RANDOM_SEED)
 
@@ -64,16 +66,26 @@ dataset = DelayedRecallDataset(
     RANDOM_SEED
 )
 
-X, y = dataset[0]
+# X, y = dataset[0]
 
-print(f"data shape: {X.shape}")
-print(f"X sample: {X}")
-print(f"y value: {y}")
+# print(f"data shape: {X.shape}")
+# print(f"X sample: {X}")
+# print(f"y value: {y}")
 
-X_res, y_res = dataset.__getitem__(45)
+# X_res, y_res = dataset.__getitem__(45)
 
-print(f"X res sample: {X_res}")
-print(f"y res value: {y_res}")
+# print(f"X res sample: {X_res}")
+# print(f"y res value: {y_res}")
 
-dataset_length = dataset.__len__()
-print(f"dataset length: {dataset_length}")
+# dataset_length = dataset.__len__()
+# print(f"dataset length: {dataset_length}")
+
+loader = DataLoader(dataset,
+                    batch_size=BATCH_SIZE,
+                    shuffle=True)
+
+X_batch, y_batch = next(iter(loader))
+
+print(f"x batch shape: {X_batch.shape}")
+print(f"y batch shape: {y_batch.shape}")
+print(f"Number of batch collections: {len(loader)}")
