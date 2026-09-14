@@ -86,7 +86,7 @@ def train_model(
         accuracy_history.append(epoch_accuracy)
 
         print(
-            f"Epoch: {epoch + 1}" |
-            f"Loss: {average_loss:.4f}" |
+            f"Epoch: {epoch + 1} | "
+            f"Loss: {average_loss:.4f} | "
             f"Accuracy: {epoch_accuracy:.2f}"
         )
