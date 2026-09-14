@@ -22,3 +22,37 @@ embedding = nn.Embedding(
     NUM_EMBEDDINGS,
     EMBEDDING_DIM
 )
+
+class VanillaRNN(nn.Module):
+    def __init__(self, 
+                 hidden_size, 
+                 output_size, 
+                 num_embedding,
+                 embedding_dim,
+                 num_layers=1):
+        super().__init__()
+
+        self.hidden_size = hidden_size
+        self.num_layers = num_layers
+
+        self.embedding = nn.Embedding(
+            num_embedding,
+            embedding_dim
+        )
+
+        self.rnn = nn.RNN(
+            input_size=embedding_dim,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            batch_first=True,
+            nonlinearity="tanh"
+        )
+
+        self.fc = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        x = self.embedding(x)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size)
+        out, hn = self.rnn(x, h0)
+        out = self.fc(out[:, -1, :])
+        return out
