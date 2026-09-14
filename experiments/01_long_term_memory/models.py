@@ -14,9 +14,13 @@ nnEmbedding:
 
 import torch
 import torch.nn as nn
+from dataset import DelayedRecallDataset, loader
 
 NUM_EMBEDDINGS = 10
 EMBEDDING_DIM = 32
+HIDDEN_SIZE = 64
+OUTPUT_SIZE = 10
+RANDOM_SEED = 42
 
 embedding = nn.Embedding(
     NUM_EMBEDDINGS,
@@ -56,3 +60,22 @@ class VanillaRNN(nn.Module):
         out, hn = self.rnn(x, h0)
         out = self.fc(out[:, -1, :])
         return out
+
+model = VanillaRNN(
+    hidden_size=HIDDEN_SIZE,
+    output_size=OUTPUT_SIZE,
+    num_embedding=NUM_EMBEDDINGS,
+    embedding_dim=EMBEDDING_DIM
+)
+
+dataset = DelayedRecallDataset(
+    num_samples=100,
+    num_classes=10,
+    seq_length=50,
+    random_seed=RANDOM_SEED
+)
+
+X, y = next(iter(loader))
+
+logits = model(X)
+print(logits)
