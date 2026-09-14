@@ -46,13 +46,10 @@ class DelayedRecallDataset(Dataset):
 
         torch.manual_seed(self.random_seed)
 
-    def generate_dataset(self):
         self.X = torch.randint(0,
                           self.num_classes,
                           size=(self.num_samples, self.seq_length))
         self.y = self.X[:, 0]
-
-        return self.X, self.y
 
     def __len__(self):
         return self.num_samples
@@ -67,13 +64,16 @@ dataset = DelayedRecallDataset(
     RANDOM_SEED
 )
 
-X, y = dataset.generate_dataset()
+X, y = dataset[0]
 
 print(f"data shape: {X.shape}")
-print(f"X sample: {X[0]}")
-print(f"y value: {y[0]}")
+print(f"X sample: {X}")
+print(f"y value: {y}")
 
 X_res, y_res = dataset.__getitem__(45)
 
 print(f"X res sample: {X_res}")
 print(f"y res value: {y_res}")
+
+dataset_length = dataset.__len__()
+print(f"dataset length: {dataset_length}")
