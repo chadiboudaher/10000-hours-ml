@@ -19,9 +19,12 @@ np.random.seed(RANDOM_SEED)
 
 # Create an example
 
-data = np.random.randint(0, NUM_CLASSES, SEQUENCE_LENGTH)
+X = np.random.randint(0, NUM_CLASSES, SEQUENCE_LENGTH)
+y = X[0]
 
-print(f"data shape: {data.shape}")
-print(f"data sample: {data[:5]}")
-data = torch.from_numpy(data)
-print(f"data tensor: {data[:5]}")
+print(f"X shape: {X.shape}")
+print(f"X sample: {X[:5]}")
+X = torch.from_numpy(X)
+print(f"X tensor: {X[:5]}")
+
+print(f"y value: {y}")
