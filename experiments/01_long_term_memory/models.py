@@ -61,18 +61,36 @@ class VanillaRNN(nn.Module):
         out = self.fc(out[:, -1, :])
         return out
 
-model = VanillaRNN(
-    hidden_size=HIDDEN_SIZE,
-    output_size=OUTPUT_SIZE,
-    num_embedding=NUM_EMBEDDINGS,
-    embedding_dim=EMBEDDING_DIM
-)
+class LSTM(nn.Module):
+    def __init__(self, 
+                 hidden_size, 
+                 output_size, 
+                 num_embedding,
+                 embedding_dim,
+                 num_layers=1):
+        super().__init__()
 
-dataset = DelayedRecallDataset(
-    num_samples=100,
-    num_classes=10,
-    seq_length=50,
-    random_seed=RANDOM_SEED
-)
+        self.hidden_size = hidden_size
+        self.num_layers = num_layers
 
-X, y = next(iter(loader))
+        self.embedding = nn.Embedding(
+            num_embedding,
+            embedding_dim
+        )
+
+        self.lstm = nn.LSTM(
+            input_size=embedding_dim,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            batch_first=True
+        )
+
+        self.fc = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        x = self.embedding(x)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size)
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size)
+        out, (hn, cn) = self.lstm(x, (h0, c0))
+        out = self.fc(out[:, -1, :])
+        return out
