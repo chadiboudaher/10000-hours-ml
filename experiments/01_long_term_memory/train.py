@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from dataset import DelayedRecallDataset
-from models import VanillaRNN
+from models import VanillaRNN, LSTM
 
 NUM_SAMPLES = 100
 RANDOM_SEED = 42
@@ -27,7 +27,14 @@ loader = DataLoader(dataset,
                     batch_size=BATCH_SIZE,
                     shuffle=True)
 
-model = VanillaRNN(
+model_0 = VanillaRNN(
+    hidden_size=HIDDEN_SIZE,
+    output_size=OUTPUT_SIZE,
+    num_embedding=NUM_EMBEDDINGS,
+    embedding_dim=EMBEDDING_DIM
+)
+
+model_1 = LSTM(
     hidden_size=HIDDEN_SIZE,
     output_size=OUTPUT_SIZE,
     num_embedding=NUM_EMBEDDINGS,
@@ -35,8 +42,13 @@ model = VanillaRNN(
 )
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(
-    model.parameters(),
+optimizer_0 = optim.Adam(
+    model_0.parameters(),
+    lr=1e-3
+)
+
+optimizer_1 = optim.Adam(
+    model_1.parameters(),
     lr=1e-3
 )
 
