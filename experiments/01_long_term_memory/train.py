@@ -36,7 +36,7 @@ val_loader = DataLoader(val_data,
                         batch_size=BATCH_SIZE,
                         shuffle=False)
 
-test_loader = DataLoader(val_data,
+test_loader = DataLoader(test_data,
                          batch_size=BATCH_SIZE,
                          shuffle=False)
 
@@ -87,15 +87,18 @@ optimizer_2 = optim.Adam(
 def train_model(
         epochs,
         dataloader,
+        val_dataloader,
         criterion: nn,
         optimizer: optim,
         model: nn.Module
 ):
-    model.train()
     loss_history = []
     accuracy_history = []
+    val_loss_history = []
+    val_accuracy_history = []
     
     for epoch in range(epochs):
+        model.train()
         epoch_loss = 0.0
         correct = 0
         total = 0
@@ -118,15 +121,27 @@ def train_model(
 
         average_loss = epoch_loss / len(dataloader)
         epoch_accuracy = correct / total
+        val_average_loss, val_epoch_accuracy = model_eval(model, val_dataloader, criterion)
 
         loss_history.append(average_loss)
         accuracy_history.append(epoch_accuracy)
+        val_loss_history.append(val_average_loss)
+        val_accuracy_history.append(val_epoch_accuracy)
 
         print(
             f"Epoch: {epoch + 1} | "
-            f"Loss: {average_loss:.4f} | "
-            f"Accuracy: {epoch_accuracy:.2f}"
+            f"Train Loss: {average_loss:.4f} | "
+            f"Train Accuracy: {epoch_accuracy:.2f} | "
+            f"Val Loss: {val_average_loss:.4f} | "
+            f"Val Accuracy: {val_epoch_accuracy:.2f} | "
         )
+
+    return (
+        loss_history, 
+        accuracy_history,
+        val_loss_history,
+        val_accuracy_history
+    )
 
 def model_eval(
         model: nn.Module,
