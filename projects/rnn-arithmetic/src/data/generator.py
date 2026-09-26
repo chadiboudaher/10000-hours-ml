@@ -1,5 +1,4 @@
 import json
-import torch
 import random
 
 NUM_SAMPLES = 10
