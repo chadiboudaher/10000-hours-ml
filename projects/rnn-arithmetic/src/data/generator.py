@@ -83,12 +83,12 @@ def generator(
     return samples
 
 
-samples = generator(
-    num_samples=NUM_SAMPLES,
-    min_digits=MIN_DIGITS,
-    max_digits=MAX_DIGITS,
-    operation=OPERATION
-)
+# samples = generator(
+#     num_samples=NUM_SAMPLES,
+#     min_digits=MIN_DIGITS,
+#     max_digits=MAX_DIGITS,
+#     operation=OPERATION
+# )
 
-for sample in samples:
-    print(json.dumps(sample, indent=2))
+# for sample in samples:
+#     print(json.dumps(sample, indent=2))

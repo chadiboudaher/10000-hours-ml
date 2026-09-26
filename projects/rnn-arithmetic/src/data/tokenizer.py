@@ -54,14 +54,14 @@ def decode(encoded: torch.Tensor) -> str:
 
 
 
-text = "76+68"
+# text = "76+68"
 
-encoded = encode(text)
-decoded = decode(encoded)
+# encoded = encode(text)
+# decoded = decode(encoded)
 
-print(text)
-print(encoded)
-print(decoded)
+# print(text)
+# print(encoded)
+# print(decoded)
 
-print(encode("144"))
-print(encode("144", add_special_tokens=True))
+# print(encode("144"))
+# print(encode("144", add_special_tokens=True))
