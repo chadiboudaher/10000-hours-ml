@@ -35,5 +35,5 @@ dist/
 .ruff_cache/
 
 # Large/local data
-data/
+
 datasets/
