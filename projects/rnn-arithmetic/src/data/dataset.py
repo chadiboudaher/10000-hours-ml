@@ -62,6 +62,16 @@ def collate_fn(batch):
         for sample in batch
     ]
 
+    carry_counts = torch.tensor([
+        sample["carry_count"]
+        for sample in batch
+    ])
+
+    max_carry_chains = torch.tensor([
+        sample["max_carry_chain"]
+        for sample in batch
+    ])
+
     padded_inputs = pad_sequence(
         input_sequences,
         batch_first=True,
@@ -77,6 +87,8 @@ def collate_fn(batch):
     return {
         "input_ids": padded_inputs,
         "target_ids": padded_targets,
+        "carry_count": carry_counts,
+        "max_carry_chain": max_carry_chains,
     }
 
 dataset = ArithmeticDataset(
