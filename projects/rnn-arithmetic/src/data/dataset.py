@@ -107,8 +107,8 @@ loader = DataLoader(
 
 batch = next(iter(loader))
 
-print(batch["input_ids"])
-print(batch["input_ids"].shape)
+# print(batch["input_ids"])
+# print(batch["input_ids"].shape)
 
-print(batch["target_ids"])
-print(batch["target_ids"].shape)
+# print(batch["target_ids"])
+# print(batch["target_ids"].shape)
